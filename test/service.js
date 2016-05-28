@@ -152,33 +152,6 @@ describe('A Service Object', function() {
 	});
 
 	describe('provides the method', function() {
-		describe('missingMounts() which works if', function() {
-			it('we have no mounts', function *() {
-				reset.push(prepareFS());
-
-				var service = new Service(dir, {});
-				var mounts = yield service.missingMounts();
-				mounts.length.must.be(0);
-			});
-
-			it('we have a missing mount', function *() {
-				reset.push(prepareFS({mounts:{'some': 'mount'}}));
-
-				var service = new Service(dir, {});
-				var mounts = yield service.missingMounts();
-				mounts.length.must.be(1);
-				mounts[0].must.be('mount');
-			});
-
-			it('we have existing mounts', function *() {
-				reset.push(prepareFS({mounts:{'some': 'mount'}}, false, false, true));
-
-				var service = new Service(dir, {});
-				var mounts = yield service.missingMounts();
-				mounts.length.must.be(0);
-			});
-		});
-
 		describe('missingDeps() which works if', function() {
 			it('we have no dependencies', function *() {
 				reset.push(prepareFS({deps: []}));
@@ -523,17 +496,6 @@ describe('A Service Object', function() {
 				service.run = function *(nodaemon) {
 					spy('run', nodaemon);
 				};
-			});
-
-			it('throws on missing mounts', function *() {
-				service.missingMounts = function *() {
-					return ['some', 'mounts'];
-				};
-
-				try {
-					yield service.start();
-					false.must.be.true();
-				} catch(e) {}
 			});
 
 			it('throws on missing dependencies', function *() {

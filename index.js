@@ -9,6 +9,7 @@ if(!fs.existsSync(root)) fs.mkdirSync(root);
 
 var services = {};
 fs.readdirSync(root).forEach(function(link) {
+	if (!fs.lstatSync(path.join(root, link)).isDirectory()) { return; }
 	var service = new Service(fs.realpathSync(path.join(root, link)), services);
 	services[service.name] = service;
 });
