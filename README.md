@@ -1,10 +1,10 @@
 Docker Service Manager
 ======================
-[![Build Status](https://img.shields.io/travis/PaulAvery/node-docker-service.svg?style=flat)](https://travis-ci.org/PaulAvery/node-docker-service)
+[![Build Status](https://img.shields.io/travis/michaelmior/node-docker-service.svg?style=flat)](https://travis-ci.org/michaelmior/node-docker-service)
 
-This tool allows the user to manage services run within docker containers. I created this tool out of the neccesity to have a multitude of services running on a single private server. These services might at times depend on each other and each expose different ports.
+This tool allows the user to manage services run within docker containers. I created this tool out of the necessity to have a multitude of services running on a single private server. These services might at times depend on each other and each expose different ports.
 
-After messing around with virtual machines for quite some time, I finally settled on running each service in its own docker container. This application helps me (and maybe you), to easily mount folders and config files, to expose neccessary ports and to build and start all neccessary images and containers.
+After messing around with virtual machines for quite some time, I finally settled on running each service in its own docker container. This application helps me (and maybe you), to easily mount folders and config files, to expose necessity ports and to build and start all necessity images and containers.
 
 It also takes care of setting the containers timezone, so no time mismatches happen between the service and the host.
 
@@ -60,7 +60,7 @@ If you have no mounts, you do not need this directory.
 
 ### `config` directory
 This directory contains any configuration files for your service. These are linked into the services container, so you may change them without much fuss.
-You should treat this directory like a linux systems root folder. So `config/etc/something.conf` will be linked to `/etc/something.conf` inside the container.
+You should treat this directory like a Linux systems root folder. So `config/etc/something.conf` will be linked to `/etc/something.conf` inside the container.
 If you have no configuration files, you may omit this folder.
 
 In addition, you may specify entire folders in your `service.json`'s `configs` property. The following would mount `config/home/sabnzbd/.sabnzbd` and `config/home/sabnzbd/downloads` to `/home/sabnzbd/.sabnzbd` and `/home/sabnzbd/downloads` respectively:
@@ -74,20 +74,14 @@ In addition, you may specify entire folders in your `service.json`'s `configs` p
 		}
 	}
 
-Single files will still be mounted seperately **unless** they are positioned in a folder which will be mounted.
+Single files will still be mounted separately **unless** they are positioned in a folder which will be mounted.
 
 CLI
 ---
 The application exposes the following commands:
 
-### docker-service add \<path\>
-Adds a new service from a directory
-
-### docker-service remove \<name\>
-Removes the given service, including any images and containers.
-
 ### docker-service start \<name\>
-Builds any neccessary images and containers as well as starting all dependencies before starting up your service. First time doing this might take some time.
+Builds any necessary images and containers as well as starting all dependencies before starting up your service. First time doing this might take some time.
 
 A `-d`/`--nodaemon` flag may be passed, to start a service in non-daemon mode.
 
@@ -98,19 +92,10 @@ Stops the container running your service
 Restarts a service.
 
 ### docker-service status \<name\>
-Prints status information as json to the command line.
+Prints status information as JSON to the command line.
 
 ### docker-service list
 Lists all installed services with their current status.
-
-### docker-service systemd
-Install a systemd service `dockers` to start services on boot.
-If the service is installed, removes it.
-
-Use like:
-
-	systemctl enable dockers@servicename
-
 
 Errors
 ------
