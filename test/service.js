@@ -419,61 +419,6 @@ describe('A Service Object', function() {
 			});
 		});
 
-		describe('remove() which', function() {
-			var service, stub = sinon.stub();
-			beforeEach(function() {
-				stub.reset();
-				reset.push(prepareFS({name: 'name'}));
-				reset.push(prepareDocker(stub));
-				service = new Service(dir, {});
-			});
-
-			it('stops the container if needed', function *() {
-				service.isRunning = function *() {
-					return true;
-				};
-				service.isBuilt = function *() {
-					return true;
-				};
-
-				yield service.remove();
-
-				stub.calledThrice.must.be.true();
-				stub.calledWith(['stop', 'name']).must.be.true();
-				stub.calledWith(['rm', 'name']).must.be.true();
-				stub.calledWith(['rmi', 'user/tag']).must.be.true();
-			});
-
-			it('removes the container if needed', function *() {
-				service.isRunning = function *() {
-					return false;
-				};
-				service.isBuilt = function *() {
-					return true;
-				};
-
-				yield service.remove();
-
-				stub.calledTwice.must.be.true();
-				stub.calledWith(['rm', 'name']).must.be.true();
-				stub.calledWith(['rmi', 'user/tag']).must.be.true();
-			});
-
-			it('removes the image', function *() {
-				service.isRunning = function *() {
-					return true;
-				};
-				service.isBuilt = function *() {
-					return true;
-				};
-
-				yield service.remove();
-
-				stub.calledThrice.must.be.true();
-				stub.calledWith(['rmi', 'user/tag']).must.be.true();
-			});
-		});
-
 		describe('start() which', function() {
 			var service, spy = sinon.spy();
 			beforeEach(function() {
@@ -635,22 +580,6 @@ describe('A Service Object', function() {
 				yield service.restart();
 				spy.calledTwice.must.be.true();
 				spy.calledWith('stop').must.be.true();
-				spy.calledWith('start').must.be.true();
-			});
-		});
-
-		describe('rebuild() which', function() {
-			it('removes and restarts the service', function *() {
-				reset.push(prepareFS());
-
-				var spy = sinon.spy();
-				var service = new Service(dir, {});
-				service.remove = function *() { spy('remove'); };
-				service.start = function *() { spy('start'); };
-
-				yield service.rebuild();
-				spy.calledTwice.must.be.true();
-				spy.calledWith('remove').must.be.true();
 				spy.calledWith('start').must.be.true();
 			});
 		});

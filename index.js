@@ -14,16 +14,6 @@ fs.readdirSync(root).forEach(function(link) {
 	services[service.name] = service;
 });
 
-function *add(pth) {
-	var service = new Service(path.resolve(process.cwd(), pth), services);
-	if(services[service.name]) throw new Error('Service by that name already exists');
-
-	yield fs.cosymlink(path.resolve(process.cwd(), pth), path.join(root, service.name));
-	services[service.name] = service;
-
-	return service;
-}
-
 function *list() {
 	var result = [];
 	var arr = _.toArray(services);
@@ -40,23 +30,13 @@ function *status(name) {
 	return yield services[name].toString();
 }
 
-function *remove(name) {
-	if(!services[name]) throw new Error('No service by that name');
-	yield services[name].remove();
-	delete services[name];
-
-	yield fs.counlink(path.join(root, name));
-}
-
 function *get(name) {
 	if(!services[name]) throw new Error('No service by that name');
 	return services[name];
 }
 
 module.exports = {
-	add: add,
 	list: list,
 	status: status,
-	remove: remove,
 	get: get
 };

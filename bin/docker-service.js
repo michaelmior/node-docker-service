@@ -27,23 +27,6 @@ app.command('status <name>')
 		});
 	});
 
-app.command('add <path>')
-	.description('Add a new service')
-	.action(function(path) {
-		co(services.add(path))(function(err, service) {
-			if(err) throw err;
-			console.log(service.name);
-		});
-	});
-
-app.command('remove <service>')
-	.description('Remove a service')
-	.action(function(name) {
-		co(services.remove(name))(function(err) {
-			if(err) throw err;
-		});
-	});
-
 app.command('start <service>')
 	.description('Start a service')
 	.option('-d, --nodaemon', 'Do not start in daemon mode')
@@ -76,21 +59,6 @@ app.command('restart <service>')
 		})(function(err) {
 			if(err) throw werr;
 		});
-	});
-
-app.command('systemd')
-	.description('Add or remove systemd service')
-	.action(function() {
-		var file = '/usr/lib/systemd/system/dockers@.service';
-
-		try {
-			fs.symlinkSync(path.join('..', __dirname, 'systemd.service'), file);
-			console.log('Added', file);
-		} catch(e) {
-			if(e.code !== 'EEXIST') throw e;
-			fs.unlinkSync(file);
-			console.log('Removed', file);
-		}
 	});
 
 app.parse(process.argv);
