@@ -1,13 +1,13 @@
 {
-  "name": "docker-service",
+  "name": "docker-service-manager",
   "description": "Manage docker containers as services",
-  "version": "2.0.0",
+  "version": "1.0.0",
   "main": "index.js",
   "preferGlobal": "true",
   "bin": "bin/docker-service.sh",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Paulavery/node-docker-service.git"
+    "url": "https://github.com/michaelmior/node-docker-service.git"
   },
   "devDependencies": {
     "co-mocha": "^1.0.3",
@@ -22,7 +22,7 @@
   "scripts": {
     "test": "mocha --harmony --require co-mocha --require must && jshint . --exclude-path .gitignore --reporter node_modules/jshint-stylish/stylish.js"
   },
-  "author": "Florian Albertz",
+  "author": "Michael Mior",
   "license": "BSD-3-Clause",
   "jshintConfig": {
     "node": true,

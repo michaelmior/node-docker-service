@@ -2,19 +2,16 @@ Docker Service Manager
 ======================
 [![Build Status](https://img.shields.io/travis/michaelmior/node-docker-service.svg?style=flat)](https://travis-ci.org/michaelmior/node-docker-service)
 
-This tool allows the user to manage services run within docker containers. I created this tool out of the necessity to have a multitude of services running on a single private server. These services might at times depend on each other and each expose different ports.
-
-After messing around with virtual machines for quite some time, I finally settled on running each service in its own docker container. This application helps me (and maybe you), to easily mount folders and config files, to expose necessity ports and to build and start all necessity images and containers.
-
+This tool is a fork of [docker-service](https://github.com/Paulavery/node-docker-service/).
+This tool allows the user to manage services run within docker containers.
+These services might at times depend on each other and each expose different ports.
+This application helps me (and maybe you), to easily mount folders and config files, to expose necessity ports and to build and start all necessity images and containers.
 It also takes care of setting the containers timezone, so no time mismatches happen between the service and the host.
 
 Structure of a Service
 ----------------------
-Each service lives inside its own folder. This folder may be located anywhere, and will be symlinked into `/etc/docker-services` by using
-
-	$ docker-service add /some/services/folder
-
-This folder will not be deleted upon uninstalling this module, so you should take care of this on your own!
+Each service lives inside its own folder.
+By default these folders live in `/etc/docker-services` but you can customize this by setting the environment variable `DOCKER_SERVICE_ROOT`.
 
 ### service.json
 A service contains at its heart a `service.json` file, which may look like this:
@@ -53,6 +50,9 @@ Define names for any directories which need to be mounted into your services con
 
 #### deps
 An array listing all dependencies of this service. These dependencies will be started before loading up your service.
+
+#### env
+A hash of any environment variables to set in the container.
 
 ### `mounts` directory
 You should symlink your mounts here under the name defined in your `service.json`. This allows you to check in the required mounts to git, while easily assigning them on each machine.
