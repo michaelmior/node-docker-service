@@ -20,7 +20,7 @@
     "sinon": "^1.11.1"
   },
   "scripts": {
-    "test": "mocha --harmony --require co-mocha --require must && jshint . --exclude-path .gitignore --reporter node_modules/jshint-stylish"
+    "test": "mocha --require co-mocha --require must && jshint . --exclude-path .gitignore --reporter node_modules/jshint-stylish"
   },
   "author": "Florian Albertz",
   "license": "BSD-3-Clause",
