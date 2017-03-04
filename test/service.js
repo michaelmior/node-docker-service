@@ -607,37 +607,41 @@ describe('A Service Object', function() {
 				var service = new Service(dir, services);
 
 				yield service.run(nodaemon);
-				line = stub.firstCall.args[0].join(' ');
+				return stub.firstCall.args[0].join(' ');
 			}
 
 			describe('calls docker run', function() {
-				describe('by default', function *() {
-					var line = yield genLine();
-
-					it('on the correct image', function() {
+				describe('by default', function() {
+					it('on the correct image', function*() {
+						var line = yield genLine();
 						line.substring(0, 3).must.be('run');
 						line.substring(line.length-8).must.be('user/tag');
 					});
 
-					it('in deamon mode', function() {
+					it('in deamon mode', function *() {
+						var line = yield genLine();
 						line.must.contain(' -d ');
 					});
 
-					it('with correct name', function() {
+					it('with correct name', function *() {
+						var line = yield genLine();
 						line.must.contain(' --name tag ');
 					});
 
-					it('with correct mounts', function() {
+					it('with correct mounts', function *() {
+						var line = yield genLine();
 						line.must.contain(' -v ' + dir + '/mounts/mount1:/some/mount1 ');
 						line.must.contain(' -v ' + dir + '/mounts/mount2:/some/mount2 ');
 					});
 
-					it('with correct ports', function() {
+					it('with correct ports', function *() {
+						var line = yield genLine();
 						line.must.contain(' -p 1000:1000 ');
 						line.must.contain(' -p 2000:2000 ');
 					});
 
-					it('with correct configs', function() {
+					it('with correct configs', function *() {
+						var line = yield genLine();
 						line.must.contain(' -v ' + dir + '/config/some/config1:/some/config1');
 						line.must.contain(' -v ' + dir + '/config/some/config2:/some/config2');
 						line.must.contain(' -v ' + dir + '/config/some/other/config/folders:/some/other/config/folders');
@@ -645,16 +649,16 @@ describe('A Service Object', function() {
 						line.must.contain(' -v ' + dir + '/config/some/other/empty:/some/other/empty');
 					});
 
-					it('with mounts to take the hoststimezone', function() {
+					it('with mounts to take the hoststimezone', function *() {
+						var line = yield genLine();
 						line.must.contain(' -v /etc/localtime:/etc/localtime:ro');
 						line.must.contain(' -v /etc/timezone:/etc/timezone:ro');
 					});
 				});
 
-				describe('in non daemon mode', function *() {
-					var line = yield genLine(true);
-
-					it('without the -d flag', function() {
+				describe('in non daemon mode', function() {
+					it('without the -d flag', function *() {
+						var line = yield genLine(true);
 						line.must.not.contain(' -d');
 					});
 				});
