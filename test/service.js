@@ -9,6 +9,7 @@ var Service = rewire('../lib/service.js');
 
 function prepareFS(json, dockerfile, config, mounts) {
 	json = json || {};
+	json.args = ['foo'];
 	json.tag = 'user/tag';
 
 	var struct = {};
@@ -77,6 +78,11 @@ describe('A Service Object', function() {
 
 				var service = new Service(dir, services);
 				service.services.must.be(services);
+			});
+
+			it('args ', function() {
+				var service = new Service(dir, {});
+				service.args.must.eql(['foo']);
 			});
 
 			it('tag ', function() {
@@ -614,11 +620,18 @@ describe('A Service Object', function() {
 				describe('by default', function() {
 					it('on the correct image', function*() {
 						var line = yield genLine();
-						line.substring(0, 3).must.be('run');
-						line.substring(line.length-8).must.be('user/tag');
+            var words = line.split(' ');
+						words[0].must.be('run');
+            words[words.length - 2].must.be('user/tag');
 					});
 
-					it('in deamon mode', function *() {
+					it('with the correct arguments', function*() {
+						var line = yield genLine();
+            var words = line.split(' ');
+            words[words.length - 1].must.be('foo');
+          });
+
+					it('in daemon mode', function *() {
 						var line = yield genLine();
 						line.must.contain(' -d ');
 					});
