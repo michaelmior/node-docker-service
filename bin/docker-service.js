@@ -4,6 +4,7 @@ var pkg = require('../package.json');
 var services = require('../index.js');
 var fs = require('fs');
 var path = require('path');
+var prettyjson = require('prettyjson');
 
 var app = require('commander');
 
@@ -12,18 +13,24 @@ app.version(pkg.version);
 app.command('list')
 	.description('List all installed services')
 	.action(function() {
-		co(services.list)(function(err, data) {
-			if(err) throw err;
-			console.log(data.join('\n'));
+		co(services.list).then(function(data) {
+			data.forEach(function(datum) {
+				console.log(datum);
+			});
+		}, function(err) {
+			throw err;
 		});
 	});
 
 app.command('status <name>')
 	.description('Retrieve infos about a service')
 	.action(function(name) {
-		co(services.status(name))(function(err, data) {
-			if(err) throw err;
-			console.log(data);
+		co(services.status(name)).then(function(data) {
+			console.log(prettyjson.render(JSON.parse(data), {
+        inlineArrays: true,
+      }));
+		}, function(err) {
+			throw err;
 		});
 	});
 
@@ -34,7 +41,7 @@ app.command('start <service>')
 		co(function *() {
 			var service = yield services.get(name);
 			yield service.start(opts.nodaemon);
-		})(function(err) {
+		}).catch(function(err) {
 			if(err) throw err;
 		});
 	});
@@ -45,7 +52,7 @@ app.command('stop <service>')
 		co(function *() {
 			var service = yield services.get(name);
 			yield service.stop();
-		})(function(err) {
+		}).catch(function(err) {
 			if(err) throw err;
 		});
 	});
@@ -56,8 +63,8 @@ app.command('restart <service>')
 		co(function *() {
 			var service = yield services.get(name);
 			yield service.restart();
-		})(function(err) {
-			if(err) throw werr;
+		}).catch(function(err) {
+			if(err) throw err;
 		});
 	});
 
