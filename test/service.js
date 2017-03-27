@@ -67,6 +67,7 @@ describe('A Service Object', function() {
 				reset.push(prepareFS({
 					deps: ['some', 'dependencies'],
 					ports: [2000, 3000],
+					memory: '1g',
 					mounts: {
 						'some': 'mount'
 					}
@@ -98,6 +99,11 @@ describe('A Service Object', function() {
 			it('ports ', function() {
 				var service = new Service(dir, {});
 				service.ports.must.eql([2000, 3000]);
+			});
+
+			it('memory ', function() {
+				var service = new Service(dir, {});
+				service.memory.must.eql('1g');
 			});
 
 			it('mounts ', function() {
@@ -598,6 +604,7 @@ describe('A Service Object', function() {
 					deps: ['dep1', 'dep2'],
 					mounts: {'mount1': '/some/mount1', 'mount2': '/some/mount2'},
 					ports: [1000, 2000],
+					memory: '1g',
 					configs: {
 						'some/other': {
 							config: {
@@ -651,6 +658,11 @@ describe('A Service Object', function() {
 						var line = yield genLine();
 						line.must.contain(' -p 1000:1000 ');
 						line.must.contain(' -p 2000:2000 ');
+					});
+
+					it('with correct memory allocation', function *() {
+						var line = yield genLine();
+						line.must.contain(' -m 1g ');
 					});
 
 					it('with correct configs', function *() {

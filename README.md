@@ -22,9 +22,8 @@ A service contains at its heart a `service.json` file, which may look like this:
 	{
 		"tag": "paulavery/ympd",
 		"name": "ympd",
-		"ports": [
-			8000
-		],
+		"ports": [8000],
+		"memory": "1g",
 		"mounts": {
 			"music": "/etc/mopidy/music"
 		},
@@ -47,6 +46,9 @@ I would suggest to use this property to allow for drop-in replacements of depend
 
 #### ports
 An array defining the ports this service will expose to you. This should not contain any ports not exposed to the user.
+
+#### memory
+A string which is passed using the `--memory` option to `docker run`.
 
 #### mounts
 Define names for any directories which need to be mounted into your services container. See about the mounts directory below.
