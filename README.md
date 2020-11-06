@@ -1,6 +1,6 @@
 Docker Service Manager
 ======================
-[![Build Status](https://img.shields.io/travis/michaelmior/node-docker-service.svg?style=flat)](https://travis-ci.org/michaelmior/node-docker-service)
+[![Build Status](https://img.shields.io/travis/michaelmior/node-docker-service.svg?style=flat)](https://travis-ci.com/michaelmior/node-docker-service)
 
 This tool allows the user to manage services run within docker containers. I created this tool out of the necessity to have a multitude of services running on a single private server. These services might at times depend on each other and each expose different ports.
 
